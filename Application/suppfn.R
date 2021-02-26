@@ -1,0 +1,98 @@
+###############################################
+######## Supporting functions #################
+##### for empirical illustration ##############
+###############################################
+# Searching KNN
+dist.inf <-  function(v, A2) {
+    tmp   <- abs(A2 - v)
+    tmp.d <- colMaxs(tmp, value = T)
+    return(tmp.d)
+}
+
+dist.knn <- function(A) {
+    p    <- ncol(A)
+    A2   <- tcrossprod(A)/p
+    dis  <- apply(A2, 2, function(v) dist.inf(v=v, A2=A2))
+    return(dis)
+}
+
+findknn <- function(v, A2, K) {
+     tmp   <- abs(A2 - v)
+     tmp.d <- colMaxs(tmp, value = T)
+     out   <- ifelse(tmp.d <= nth(tmp.d, K), TRUE, FALSE) 
+     return(out)
+}
+
+knn.index <- function(A, K=NULL) {    # A: n by p; # K: tuning param.
+    p    <- ncol(A)
+    A2   <- tcrossprod(A)/p
+    Kmat <- apply(A2, 2, function(v) findknn(v=v, A2=A2, K=K))
+    return(Kmat)           # neighborhood saved in each column
+}
+
+lpca <- function(A, index, nlam, n) {      
+    A <- cbind(1:n, A)   # add a row number
+    A <- A[index,]
+    eig <- irlba(A[,-1], nu=nlam)
+    return(list(Lam=eig$u, no.neigh=A[,1], sv=eig$d))    #Lam: K by nlam
+}
+
+pred.cons <- function(i, y, d, subset=NULL, kmat) {   
+    index  <- kmat[,i]   # length n
+    sub    <- index & subset   # of length n
+    y.fitval <- mean(y[sub])
+    d.fitval <- mean(d[index])
+    
+    return(c(y.fitval, d.fitval))   # two scalars
+}
+
+# force constant approx. for propensity score
+pred <- function(i, y, d, x, subset=NULL, kmat, nlam, n, p, ctrlvar=NULL) {    
+    index <- kmat[,i]   # length n
+    PC    <- lpca(A=x[,(p/2+1):p], index=index, nlam=nlam, n=n)
+
+    # prepare design
+    sub    <- index & subset   # of length n
+    y.sub  <- y[sub]
+    design <- PC$Lam[sub[index],,drop=F]
+    if (!is.null(ctrlvar)) {
+      design <- cbind(design, ctrlvar[sub,])
+    }
+    
+    # eval
+    eval <- PC$Lam[which(PC$no.neigh==i),]
+    if (!is.null(ctrlvar)) {
+      eval <- c(eval, ctrlvar[i,])
+    }
+    
+    # run a local regression of y at ith obs.
+    y.fitval <- sum(.lm.fit(design, y.sub)$coeff * eval)
+    
+    # run a local regression of d at ith obs.
+    if (is.null(ctrlvar)) {
+      d.fitval <- mean(d[index])
+    } else {
+      design.d <- cbind(PC$Lam, ctrlvar[index,])
+      model    <- glm.fit(x=design.d, y=d[index], family=gaussian())
+      d.fitval <- model$family$linkinv(sum(model$coeff * eval))
+    }
+    if (d.fitval<0) d.fitval <- 0
+    if (d.fitval>1) d.fitval <- 1
+    
+    return(c(y.fitval, d.fitval))   # two scalars
+}
+
+
+# Computation
+compute <- function(range, y, d, x, subset=NULL, K, nlam, n, p, const=F, ctrlvar=NULL) {
+    if (const) {
+      kmat <- knn.index(A=x, K=K)
+      fit  <- sapply(range, function(i) pred.cons(i=i, y=y, d=d, subset=subset,
+                                           kmat=kmat)) 
+    } else {
+      kmat <- knn.index(A=x[,1:(p/2)], K=K)
+      fit  <- sapply(range, function(i) pred(i=i, y=y, d=d, x=x, subset=subset,
+                                             kmat=kmat, nlam=nlam, n=n, p=p, ctrlvar=ctrlvar))
+    }
+    return(list(yfit=fit[1,], ps=fit[2,]))
+}

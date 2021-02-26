@@ -1,0 +1,9 @@
+%latex.default(sum.table, file = paste("output/MainPaper_Table_SumKNN",     ".txt", sep = ""), append = FALSE, table.env = FALSE, center = "none",     title = "", n.cgroup = NULL, cgroup = NULL, colheads = colheads,     n.rgroup = NULL, rgroup = NULL, rowname = rowname)%
+\begin{tabular}{lrrrrrr}
+\hline\hline
+\multicolumn{1}{l}{}&\multicolumn{1}{c}{Min.}&\multicolumn{1}{c}{1st Qu.}&\multicolumn{1}{c}{Median}&\multicolumn{1}{c}{Mean}&\multicolumn{1}{c}{3rd Qu.}&\multicolumn{1}{c}{Max.}\tabularnewline
+\hline
+Treated&$0.422$&$0.506$&$0.632$&$0.658$&$0.750$&$ 1.143$\tabularnewline
+Control&$0.415$&$0.521$&$0.675$&$1.342$&$1.213$&$17.367$\tabularnewline
+\hline
+\end{tabular}

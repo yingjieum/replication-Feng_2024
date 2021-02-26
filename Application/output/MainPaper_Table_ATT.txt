@@ -1,0 +1,24 @@
+%latex.default(output, file = paste("output/MainPaper_Table_ATT",     ".txt", sep = ""), append = FALSE, table.env = FALSE, center = "none",     title = "", col.just = rep("c", 4), n.cgroup = n.cgroup,     cgroup = cgroup, colheads = colheads, n.rgroup = n.rgroup,     rgroup = rgroup, rowname = rowname)%
+\begin{tabular}{lccccc}
+\hline\hline
+\multicolumn{1}{l}{\bfseries }&\multicolumn{2}{c}{\bfseries No Covariates}&\multicolumn{1}{c}{\bfseries }&\multicolumn{2}{c}{\bfseries Add Covariates}\tabularnewline
+\cline{2-3} \cline{5-6}
+\multicolumn{1}{l}{}&\multicolumn{1}{c}{Full Sample}&\multicolumn{1}{c}{Base Sample}&\multicolumn{1}{c}{}&\multicolumn{1}{c}{Full Sample}&\multicolumn{1}{c}{Base Sample}\tabularnewline
+\hline
+{\bfseries Local PCA, $K=$}&&&&&\tabularnewline
+~~34&0.085&0.089&&0.073&0.087\tabularnewline
+~~&(0.028)&(0.026)&&(0.025)&(0.026)\tabularnewline
+~~69&0.094&0.100&&0.091&0.088\tabularnewline
+~~&(0.028)&(0.027)&&(0.027)&(0.03)\tabularnewline
+~~139&0.102&0.101&&0.090&0.080\tabularnewline
+~~&(0.027)&(0.027)&&(0.027)&(0.026)\tabularnewline
+\hline
+{\bfseries Acemoglu et al. (2016)}&&&&&\tabularnewline
+~~Estimate&&0.060&&&\tabularnewline
+~~CI for TE=0&&[-0.068, 0.036]&&&\tabularnewline
+\hline
+{\bfseries Abadie and L'Hour (2019)}&&&&&\tabularnewline
+~~Estimate&&0.061&&&\tabularnewline
+~~CI for TE=0&&[-0.050, 0.061]&&&\tabularnewline
+\hline
+\end{tabular}
