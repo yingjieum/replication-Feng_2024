@@ -1,4 +1,4 @@
-# Replication: Feng (2021)
+# Replication: Feng (2024)
 Replication files for simulation and empirical illustration in Feng (2024)
 
 # Reference
