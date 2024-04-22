@@ -1,7 +1,7 @@
 #####################################################
 ##### Causal Inference in Nonlinear Factor Models ###
 ############ Empirical Application ##################
-########### Last updated: 04/15/2024 ################
+########### Last updated: 04/22/2024 ################
 #####################################################
 # This file replicates the results in Feng (2024)
 # Data source: Acemoglu et al (JFE, 2016) 
