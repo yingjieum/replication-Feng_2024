@@ -1,0 +1,8 @@
+\begin{tabular}{lrrrrrr}
+\hline\hline
+\multicolumn{1}{l}{}&\multicolumn{1}{c}{Min.}&\multicolumn{1}{c}{1st Qu.}&\multicolumn{1}{c}{Median}&\multicolumn{1}{c}{Mean}&\multicolumn{1}{c}{3rd Qu.}&\multicolumn{1}{c}{Max.}\tabularnewline
+\hline
+Treated&$0.671$&$1.043$&$1.166$&$1.199$&$1.313$&$1.840$\tabularnewline
+Control&$0.602$&$0.881$&$1.064$&$1.228$&$1.345$&$6.638$\tabularnewline
+\hline
+\end{tabular}
